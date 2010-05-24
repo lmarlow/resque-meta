@@ -27,6 +27,7 @@ module Resque
 
         def save
           job_class.store_meta(self)
+          self
         end
 
         def [](key)
@@ -38,8 +39,8 @@ module Resque
         end
 
         def start!
-          self['_started_at'] ||= to_sec_and_usec(Time.now)
-          self
+          self['_started_at'] = to_sec_and_usec(Time.now)
+          save
         end
 
         def started_at
@@ -47,9 +48,9 @@ module Resque
         end
 
         def finish!
-          @data['_succeeded'] = true unless @data.has_key?('_succeeded')
-          self['_finished_at'] ||= to_sec_and_usec(Time.now)
-          self
+          data['_succeeded'] = true unless data.has_key?('_succeeded')
+          self['_finished_at'] = to_sec_and_usec(Time.now)
+          save
         end
 
         def finished_at
@@ -82,7 +83,7 @@ module Resque
 
         def fail!
           self['_succeeded'] = false
-          self
+          finish!
         end
 
         def succeeded?

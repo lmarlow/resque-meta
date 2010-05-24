@@ -42,6 +42,15 @@ class SlowJob
   end
 end
 
+class FailingJob
+  extend Resque::Plugins::Meta
+  @queue = :test
+
+  def self.perform(*args)
+    raise 'boom'
+  end
+end
+
 class MetaTest < Test::Unit::TestCase
   def setup
     Resque.redis.flushall
@@ -124,8 +133,21 @@ class MetaTest < Test::Unit::TestCase
     assert !meta.working?
     assert meta.finished?
     assert meta.succeeded?
+    assert !meta.failed?
 
     sleep 2
     assert_nil Resque::Plugins::Meta.get_meta(meta.meta_id)
+  end
+
+  def test_failing_job
+    meta = FailingJob.enqueue()
+    assert_nil meta.failed?
+    worker = Resque::Worker.new(:test)
+    worker.work(0)
+
+    meta.reload!
+    assert meta.finished?
+    assert meta.failed?
+    assert !meta.succeeded?
   end
 end

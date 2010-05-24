@@ -78,17 +78,21 @@ module Resque
       module_function :get_meta
       public :get_meta
 
-      def around_perform_meta(meta_id, *args)
+      def before_perform_meta(meta_id, *args)
         if meta = get_meta(meta_id)
-          meta.start!.save
+          meta.start!
         end
+      end
 
-        begin
-          yield
-        rescue Object => e
-          meta && meta.reload!.fail!
-        ensure
-          meta && meta.reload!.finish!.save
+      def after_perform_meta(meta_id, *args)
+        if meta = get_meta(meta_id)
+          meta.finish!
+        end
+      end
+
+      def on_failure_meta(e, meta_id, *args)
+        if meta = get_meta(meta_id)
+          meta.fail!
         end
       end
     end
