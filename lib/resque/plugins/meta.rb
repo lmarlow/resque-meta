@@ -77,6 +77,8 @@ module Resque
           end
         end
       end
+      module_function :get_meta
+      public :get_meta
     end
   end
 end

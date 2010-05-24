@@ -69,6 +69,7 @@ class MetaTest < Test::Unit::TestCase
     meta = MetaJob.enqueue('foo', 'bar')
 
     assert_nil AnotherJob.get_meta(meta.meta_id)
+    assert_not_nil Resque::Plugins::Meta.get_meta(meta.meta_id)
   end
 
   def test_expired_metadata

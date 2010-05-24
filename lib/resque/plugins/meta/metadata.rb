@@ -21,7 +21,7 @@ module Resque
         end
 
         def reload!
-          if new_meta = @klass.get_meta(meta_id)
+          if new_meta = job_class.get_meta(meta_id)
             @data = new_meta.data
           end
           self
