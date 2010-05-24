@@ -37,8 +37,8 @@ module Resque
       end
 
       # Override in your job to control the how many seconds a job's
-      # metadata will live.  Defaults to 24 hours.  Return nil or 0
-      # to set them to never expire.
+      # metadata will live after it finishes.  Defaults to 24 hours.
+      # Return nil or 0 to set them to never expire.
       def expire_meta_in
         24 * 60 * 60
       end
@@ -57,9 +57,7 @@ module Resque
         key = "meta:#{meta.meta_id}"
         json = Resque.encode(meta.data)
         Resque.redis.set(key, json)
-        if (ttl = expire_meta_in.to_i) > 0
-          Resque.redis.expireat("resque:#{key}", ttl + meta.enqueued_at.to_i)
-        end
+        Resque.redis.expireat("resque:#{key}", meta.expire_at) if meta.expire_at > 0
         meta
       end
 
@@ -79,6 +77,20 @@ module Resque
       end
       module_function :get_meta
       public :get_meta
+
+      def around_perform_meta(meta_id, *args)
+        if meta = get_meta(meta_id)
+          meta.start!.save
+        end
+
+        begin
+          yield
+        rescue Object => e
+          meta && meta.reload!.fail!
+        ensure
+          meta && meta.reload!.finish!.save
+        end
+      end
     end
   end
 end
