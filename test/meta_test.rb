@@ -1,6 +1,4 @@
-require 'test/unit'
-require 'rubygems'
-require 'resque'
+require File.dirname(__FILE__) + '/test_helper'
 require 'resque/plugins/meta'
 
 class MetaJob
@@ -55,7 +53,7 @@ class MetaTest < Test::Unit::TestCase
   def setup
     Resque.redis.flushall
   end
-  
+
   def test_lint
     assert_nothing_raised do
       Resque::Plugin.lint(Resque::Plugins::Meta)
