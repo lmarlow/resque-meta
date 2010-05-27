@@ -1,5 +1,5 @@
 Resque Meta
-==============
+===========
 
 A [Resque][rq] plugin. Requires Resque 1.8.
 
