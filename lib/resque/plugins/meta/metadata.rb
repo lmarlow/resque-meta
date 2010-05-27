@@ -1,3 +1,5 @@
+require 'time'
+
 module Resque
   module Plugins
     module Meta
@@ -5,10 +7,10 @@ module Resque
         attr_reader :job_class, :meta_id, :data, :enqueued_at, :expire_in
 
         def initialize(data_hash)
-          data_hash['_enqueued_at'] ||= to_sec_and_usec(Time.now)
+          data_hash['_enqueued_at'] ||= to_time_format_str(Time.now)
           @data = data_hash
           @meta_id = data_hash['_meta_id'].dup
-          @enqueued_at = from_sec_and_usec('_enqueued_at')
+          @enqueued_at = from_time_format_str('_enqueued_at')
           @job_class = data_hash['_job_class']
           if @job_class.is_a?(String)
             @job_class = Resque.constantize(data_hash['_job_class'])
@@ -39,22 +41,22 @@ module Resque
         end
 
         def start!
-          self['_started_at'] = to_sec_and_usec(Time.now)
+          self['_started_at'] = to_time_format_str(Time.now)
           save
         end
 
         def started_at
-          from_sec_and_usec('_started_at')
+          from_time_format_str('_started_at')
         end
 
         def finish!
           data['_succeeded'] = true unless data.has_key?('_succeeded')
-          self['_finished_at'] = to_sec_and_usec(Time.now)
+          self['_finished_at'] = to_time_format_str(Time.now)
           save
         end
 
         def finished_at
-          from_sec_and_usec('_finished_at')
+          from_time_format_str('_finished_at')
         end
 
         def expire_at
@@ -108,12 +110,12 @@ module Resque
 
         protected
 
-        def from_sec_and_usec(key)
-          (t = self[key]) && Time.at(*t)
+        def from_time_format_str(key)
+          (t = self[key]) && Time.parse(t)
         end
 
-        def to_sec_and_usec(time)
-          [time.to_i, time.usec]
+        def to_time_format_str(time)
+          time.utc.iso8601(6)
         end
       end
     end
