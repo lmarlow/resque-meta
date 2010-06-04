@@ -7,15 +7,15 @@ module Resque
         attr_reader :job_class, :meta_id, :data, :enqueued_at, :expire_in
 
         def initialize(data_hash)
-          data_hash['_enqueued_at'] ||= to_time_format_str(Time.now)
+          data_hash['enqueued_at'] ||= to_time_format_str(Time.now)
           @data = data_hash
-          @meta_id = data_hash['_meta_id'].dup
-          @enqueued_at = from_time_format_str('_enqueued_at')
-          @job_class = data_hash['_job_class']
+          @meta_id = data_hash['meta_id'].dup
+          @enqueued_at = from_time_format_str('enqueued_at')
+          @job_class = data_hash['job_class']
           if @job_class.is_a?(String)
-            @job_class = Resque.constantize(data_hash['_job_class'])
+            @job_class = Resque.constantize(data_hash['job_class'])
           else
-            data_hash['_job_class'] = @job_class.to_s
+            data_hash['job_class'] = @job_class.to_s
           end
           @expire_in = @job_class.expire_meta_in || 0
         end
@@ -41,22 +41,22 @@ module Resque
         end
 
         def start!
-          self['_started_at'] = to_time_format_str(Time.now)
+          self['started_at'] = to_time_format_str(Time.now)
           save
         end
 
         def started_at
-          from_time_format_str('_started_at')
+          from_time_format_str('started_at')
         end
 
         def finish!
-          data['_succeeded'] = true unless data.has_key?('_succeeded')
-          self['_finished_at'] = to_time_format_str(Time.now)
+          data['succeeded'] = true unless data.has_key?('succeeded')
+          self['finished_at'] = to_time_format_str(Time.now)
           save
         end
 
         def finished_at
-          from_time_format_str('_finished_at')
+          from_time_format_str('finished_at')
         end
 
         def expire_at
@@ -84,16 +84,16 @@ module Resque
         end
 
         def fail!
-          self['_succeeded'] = false
+          self['succeeded'] = false
           finish!
         end
 
         def succeeded?
-          finished? ? self['_succeeded'] : nil
+          finished? ? self['succeeded'] : nil
         end
 
         def failed?
-          finished? ? !self['_succeeded'] : nil
+          finished? ? !self['succeeded'] : nil
         end
 
         def seconds_enqueued

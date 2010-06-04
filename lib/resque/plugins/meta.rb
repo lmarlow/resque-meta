@@ -47,7 +47,7 @@ module Resque
       # The meta_id in the returned object can be used to fetch the
       # metadata again in the future.
       def enqueue(*args)
-        meta = Metadata.new({'_meta_id' => meta_id(args), '_job_class' => self.to_s})
+        meta = Metadata.new({'meta_id' => meta_id(args), 'job_class' => self.to_s})
         meta.save
         Resque.enqueue(self, meta.meta_id, *args)
         meta
@@ -70,7 +70,7 @@ module Resque
         key = "meta:#{meta_id}"
         if json = Resque.redis.get(key)
           data = Resque.decode(json)
-          if self == Meta || self.to_s == data['_job_class']
+          if self == Meta || self.to_s == data['job_class']
             Metadata.new(data)
           end
         end
