@@ -54,13 +54,17 @@ class MetaTest < Test::Unit::TestCase
     Resque.redis.flushall
   end
 
+  def test_meta_version
+    assert_equal '1.0.0', Resque::Plugins::Meta::Version
+  end
+
   def test_lint
     assert_nothing_raised do
       Resque::Plugin.lint(Resque::Plugins::Meta)
     end
   end
 
-  def test_version
+  def test_resque_version
     major, minor, patch = Resque::Version.split('.')
     assert_equal 1, major.to_i
     assert minor.to_i >= 8

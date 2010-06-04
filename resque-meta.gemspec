@@ -1,6 +1,8 @@
+require 'resque/plugins/meta/version'
+
 Gem::Specification.new do |s|
   s.name              = "resque-meta"
-  s.version           = "0.1.0"
+  s.version           = Resque::Plugins::Meta::Version
   s.date              = Time.now.strftime('%Y-%m-%d')
   s.summary           = "A Resque plugin for storing job metadata."
   s.homepage          = "http://github.com/lmarlow/resque-meta"
