@@ -11,7 +11,7 @@ module Resque
     # For example:
     #
     #     class MyJob
-    #       extend Resque::Jobs::Meta
+    #       extend Resque::Plugins::Meta
     #
     #       def self.perform(meta_id, *args)
     #         heavy_lifting
