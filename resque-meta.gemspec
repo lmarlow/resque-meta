@@ -20,6 +20,8 @@ to track anything you want, extend it with this module.
 
 For example:
 
+    require 'resque-meta'
+
     class MyJob
       extend Resque::Plugins::Meta
 

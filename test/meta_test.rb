@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/test_helper'
-require 'resque/plugins/meta'
+require 'resque-meta'
 
 class MetaJob
   extend Resque::Plugins::Meta
