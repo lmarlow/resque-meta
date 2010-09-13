@@ -36,7 +36,7 @@ module Resque
       # passed the same arguments as `perform`, that is, your job's
       # payload.
       def meta_id(*args)
-        Digest::SHA1.hexdigest([ Time.now.to_f, self, args ].join)
+        Digest::SHA1.hexdigest([ Time.now.to_f, rand, self, args ].join)
       end
 
       # Override in your job to control the how many seconds a job's
