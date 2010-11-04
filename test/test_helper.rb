@@ -23,10 +23,13 @@ end
 at_exit do
   next if $!
 
+  exit_code = Test::Unit::AutoRunner.run
+
   pid = `ps -A -o pid,command | grep [r]edis-test`.split(" ")[0]
-  puts "Killing test redis server..."
+  puts "Killing test redis server[#{pid}]..."
   `rm -f #{dir}/dump.rdb`
   Process.kill("KILL", pid.to_i)
+  exit exit_code
 end
 
 puts "Starting redis for testing at localhost:9736..."
