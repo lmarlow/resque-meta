@@ -152,4 +152,20 @@ class MetaTest < Test::Unit::TestCase
     assert meta.failed?
     assert !meta.succeeded?
   end
+  
+  def test_brag_page
+    now_time = Time.now
+    meta0 = MetaJob.enqueue('stuff')
+    queue_time = meta0.enqueued_at
+    assert queue_time > Time.now - 1
+    meta_id = meta0.meta_id
+    assert_equal 'bar', meta0['foo'] = 'bar'
+    meta0.save
+
+    # later
+    meta1 = MetaJob.get_meta(meta_id)
+    assert_equal MetaJob, meta1.job_class
+    assert_equal queue_time, meta1.enqueued_at
+    assert_equal 'bar', meta1['foo']
+  end
 end
