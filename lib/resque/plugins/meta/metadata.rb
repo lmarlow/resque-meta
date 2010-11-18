@@ -20,6 +20,7 @@ module Resque
           @expire_in = @job_class.expire_meta_in || 0
         end
 
+        # Reload the metadata from the store
         def reload!
           if new_meta = job_class.get_meta(meta_id)
             @data = new_meta.data
@@ -27,6 +28,7 @@ module Resque
           self
         end
 
+        # Save the metadata
         def save
           job_class.store_meta(self)
           self
