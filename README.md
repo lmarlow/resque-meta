@@ -22,6 +22,7 @@ For example:
     meta0.enqueued_at # => 'Wed May 19 13:42:41 -0600 2010'
     meta0.meta_id # => '03c9e1a045ad012dd20500264a19273c'
     meta0['foo'] = 'bar' # => 'bar'
+    meta0.save
 
     # later
     meta1 = MyJob.get_meta('03c9e1a045ad012dd20500264a19273c')

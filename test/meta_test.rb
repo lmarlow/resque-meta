@@ -156,4 +156,14 @@ class MetaTest < Test::Unit::TestCase
     assert meta.failed?
     assert !meta.succeeded?
   end
+
+  def test_saving_additional_metadata
+    meta = MetaJob.enqueue('stuff')
+    meta['foo'] = 'bar'
+    meta.save
+
+    # later
+    meta = MetaJob.get_meta(meta.meta_id)
+    assert_equal 'bar', meta['foo']
+  end
 end
