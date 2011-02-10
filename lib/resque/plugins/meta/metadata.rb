@@ -41,22 +41,24 @@ module Resque
         end
 
         def start!
-          self['started_at'] = to_time_format_str(Time.now)
+          @started_at = Time.now
+          self['started_at'] = to_time_format_str(@started_at)
           save
         end
 
         def started_at
-          from_time_format_str('started_at')
+          @started_at ||= from_time_format_str('started_at')
         end
 
         def finish!
           data['succeeded'] = true unless data.has_key?('succeeded')
-          self['finished_at'] = to_time_format_str(Time.now)
+          @finished_at = Time.now
+          self['finished_at'] = to_time_format_str(@finished_at)
           save
         end
 
         def finished_at
-          from_time_format_str('finished_at')
+          @finished_at ||= from_time_format_str('finished_at')
         end
 
         def expire_at
@@ -68,11 +70,11 @@ module Resque
         end
 
         def enqueued?
-          started_at ? false : true
+          !started?
         end
 
         def working?
-          started_at && !finished_at ? true : false
+          started? && !finished?
         end
 
         def started?
