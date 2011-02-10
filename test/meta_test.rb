@@ -55,7 +55,7 @@ class MetaTest < Test::Unit::TestCase
   end
 
   def test_meta_version
-    assert_equal '1.0.2', Resque::Plugins::Meta::Version
+    assert_equal '1.0.3', Resque::Plugins::Meta::Version
   end
 
   def test_lint
