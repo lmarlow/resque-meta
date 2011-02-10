@@ -76,8 +76,10 @@ class MetaTest < Test::Unit::TestCase
     assert_not_nil meta
     assert_not_nil meta.meta_id
     assert meta.enqueued_at.to_f > now.to_f, "#{meta.enqueued_at} should be after #{now}"
+    assert meta.seconds_enqueued > 0.0, "seconds_enqueued should be greater than zero"
     assert meta.enqueued?
     assert !meta.started?
+    assert_equal 0, meta.seconds_processing
     assert !meta.finished?
     assert_nil meta['foo']
     assert_equal Resque::Plugins::Meta::Metadata, meta.class
@@ -96,6 +98,8 @@ class MetaTest < Test::Unit::TestCase
     assert meta.finished?, 'Job should be finished'
     assert meta.succeeded?, 'Job should have succeeded'
     assert !meta.enqueued?
+    assert meta.seconds_enqueued > 0.0, "seconds_enqueued should be greater than zero"
+    assert meta.seconds_processing > 0.0, "seconds_processing should be greater than zero"
     assert_equal 'bar', meta['foo'], "'foo' not found in #{meta.inspect}"
   end
 

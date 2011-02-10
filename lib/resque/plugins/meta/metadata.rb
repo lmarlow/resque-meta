@@ -97,12 +97,12 @@ module Resque
         end
 
         def seconds_enqueued
-          (started? ? started_at : Time.now.to_i) - enqueued_at.to_i
+          (started_at || Time.now).to_f - enqueued_at.to_f
         end
 
         def seconds_processing
           if started?
-            (finished? ? finished_at : Time.now.to_i) - started_at.to_i
+            (finished_at || Time.now).to_f - started_at.to_f
           else
             0
           end
