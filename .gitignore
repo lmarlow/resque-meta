@@ -1,2 +1,6 @@
 dump.rdb
-/dist/
+doc/*
+pkg/*
+*.gem
+.bundle
+Gemfile.lock
