@@ -47,6 +47,16 @@ module Resque
         24 * 60 * 60
       end
 
+      # Override in your job to control how many seconds a job's 
+      # metadata will live *before* it finishes.  This includes the condition
+      # where the job and metadata are never finished because of a 
+      # shutdown or server crash. Defaults to 0 (i.e. 
+      # forever).  Return nil or 0 to set them to never expire. 
+      # Use caution: this value should be longer than your jobs take to run! 
+      def expire_meta_default_in
+        0
+      end
+
       # Enqueues a job in Resque and return the association metadata.
       # The meta_id in the returned object can be used to fetch the
       # metadata again in the future.

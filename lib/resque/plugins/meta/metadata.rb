@@ -4,7 +4,7 @@ module Resque
   module Plugins
     module Meta
       class Metadata
-        attr_reader :job_class, :meta_id, :data, :enqueued_at, :expire_in
+        attr_reader :job_class, :meta_id, :data, :enqueued_at, :expire_in, :expire_default_in
 
         def initialize(data_hash)
           data_hash['enqueued_at'] ||= to_time_format_str(Time.now)
@@ -18,6 +18,7 @@ module Resque
             data_hash['job_class'] = @job_class.to_s
           end
           @expire_in = @job_class.expire_meta_in || 0
+          @expire_default_in = @job_class.expire_meta_default_in || 0
         end
 
         # Reload the metadata from the store
@@ -64,8 +65,13 @@ module Resque
         end
 
         def expire_at
+          # expiry after finished
           if finished? && expire_in > 0
             finished_at.to_i + expire_in
+          # expiry after enqueued
+          elsif expire_default_in > 0
+            enqueued_at.to_i + expire_default_in
+          # default ttl is forever
           else
             0
           end
