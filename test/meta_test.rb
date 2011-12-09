@@ -56,7 +56,7 @@ class TransientJob
   def self.perform(meta_id)
   end
 
-  def self.expire_meta_default_in
+  def self.before_finish_expire_in
     1
   end
 end
