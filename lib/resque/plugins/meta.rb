@@ -47,12 +47,12 @@ module Resque
         24 * 60 * 60
       end
 
-      # Override in your job to control how many seconds a job's 
-      # metadata will live after it is enqueued and *before* it finishes.  
+      # Override in your job to control how many seconds a job's
+      # metadata will live after it is enqueued and *before* it finishes.
       # This includes the condition
-      # where the job and metadata are never finished because of a 
-      # shutdown or server crash. Defaults to 0 (i.e. 
-      # forever).  Return nil or 0 to set them to never expire. 
+      # where the job and metadata are never finished because of a
+      # shutdown or server crash. Defaults to 0 (i.e.
+      # forever).  Return nil or 0 to set them to never expire.
       # Use caution: this value should be longer than your jobs take to run!
       def before_finish_expire_in
         0
