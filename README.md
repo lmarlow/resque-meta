@@ -1,6 +1,8 @@
 Resque Meta
 ===========
 
+[![Build Status](https://secure.travis-ci.org/lmarlow/resque-meta.png)](http://travis-ci.org/lmarlow/resque-meta)
+
 A [Resque][rq] plugin. Requires Resque 1.8.
 
 If you want to be able to add metadata for a job
