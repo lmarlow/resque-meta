@@ -1,4 +1,4 @@
-require 'lib/resque/plugins/meta/version'
+require File.expand_path('../lib/resque/plugins/meta/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name              = "resque-meta"
@@ -48,7 +48,9 @@ desc
     s.specification_version = 3
 
     s.add_runtime_dependency('resque', ["~> 1.8"])
+    s.add_development_dependency('rake', ["~> 0.9.2"])
   else
     s.add_dependency('resque', ["~> 1.8"])
+    s.add_dependency('rake', ["~> 0.9.2"])
   end
 end

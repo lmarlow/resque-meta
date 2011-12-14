@@ -49,6 +49,18 @@ class FailingJob
   end
 end
 
+class TransientJob
+  extend Resque::Plugins::Meta
+  @queue = :test
+
+  def self.perform(meta_id)
+  end
+
+  def self.before_finish_expire_in
+    1
+  end
+end
+
 class MetaTest < Test::Unit::TestCase
   def setup
     Resque.redis.flushall
@@ -118,6 +130,16 @@ class MetaTest < Test::Unit::TestCase
     sleep 2
     meta = MetaJob.get_meta(meta.meta_id)
     assert_nil meta
+  end
+
+  def test_expired_metadata_before_finished
+    meta = TransientJob.enqueue()
+    worker = Resque::Worker.new(:test)
+    assert meta = TransientJob.get_meta(meta.meta_id)
+
+    sleep 2
+    meta = TransientJob.get_meta(meta.meta_id)
+    assert_equal nil, meta
   end
 
   def test_slow_job
