@@ -72,7 +72,7 @@ module Resque
         key = "meta:#{meta.meta_id}"
         json = Resque.encode(meta.data)
         Resque.redis.set(key, json)
-        Resque.redis.expireat("resque:#{key}", meta.expire_at) if meta.expire_at > 0
+        Resque.redis.expireat(key, meta.expire_at) if meta.expire_at > 0
         meta
       end
 
