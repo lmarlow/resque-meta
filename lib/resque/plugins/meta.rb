@@ -71,8 +71,11 @@ module Resque
       def store_meta(meta)
         key = "meta:#{meta.meta_id}"
         json = Resque.encode(meta.data)
-        Resque.redis.set(key, json)
-        Resque.redis.expireat(key, meta.expire_at) if meta.expire_at > 0
+        if meta.expire_at > 0
+          Resque.redis.setex(key, meta.expire_at - Time.now.to_i, json)
+        else
+          Resque.redis.set(key, json)
+        end
         meta
       end
 
