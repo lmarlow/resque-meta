@@ -49,6 +49,7 @@ desc
 
     s.add_runtime_dependency('resque', ["~> 1.8"])
     s.add_development_dependency('rake', ["~> 0.9.2"])
+    s.add_development_dependency('json')
   else
     s.add_dependency('resque', ["~> 1.8"])
     s.add_dependency('rake', ["~> 0.9.2"])
