@@ -1,3 +1,8 @@
+## 2.0.0 (2012-12-04)
+
+* Use redis setex to expire metadata from Pascal Brogle - [broglep-koubachi][broglep-koubachi] [Pull Request][pull9]
+* setex require redis 2+, hence the major version bump
+
 ## 1.0.3 (2011-02-10)
 
 * Document and test Metadata#save from Kurt Werle - [kwerle][kwerle] [Pull Request][pull3]
@@ -21,6 +26,8 @@
 [showell]: http://librelist.com/browser//resque/2010/12/8/recording-time-in-queue-and-time-to-process/#1de6433232ac1264286feeed1f8f219e
 [semanticart]: https://github.com/semanticart
 [kwerle]: https://github.com/kwerle
+[broglep-koubachi]: https://github.com/broglep-koubachi
 [pull1]: https://github.com/lmarlow/resque-meta/pull/1
 [pull2]: https://github.com/lmarlow/resque-meta/pull/2
 [pull3]: https://github.com/lmarlow/resque-meta/pull/3
+[pull9]: https://github.com/lmarlow/resque-meta/pull/9
