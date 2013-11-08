@@ -4,6 +4,7 @@ module Resque
   module Plugins
     module Meta
       class Metadata
+        include Resque::Helpers
         attr_reader :job_class, :meta_id, :data, :enqueued_at, :expire_in, :before_finish_expire_in
 
         def initialize(data_hash)
@@ -13,7 +14,7 @@ module Resque
           @enqueued_at = from_time_format_str('enqueued_at')
           @job_class = data_hash['job_class']
           if @job_class.is_a?(String)
-            @job_class = Resque.constantize(data_hash['job_class'])
+            @job_class = constantize(data_hash['job_class'])
           else
             data_hash['job_class'] = @job_class.to_s
           end
