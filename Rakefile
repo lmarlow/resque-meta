@@ -8,8 +8,4 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
-def command?(command)
-  system("type #{command} > /dev/null")
-end
-
 task :default => :test
