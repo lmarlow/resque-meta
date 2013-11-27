@@ -32,4 +32,4 @@ For example:
     meta1.enqueued_at # => 'Wed May 19 13:42:41 -0600 2010'
     meta1['foo'] # => 'bar'
 
-[rq]: http://github.com/defunkt/resque
+[rq]: http://github.com/resque/resque
