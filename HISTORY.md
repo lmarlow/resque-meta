@@ -1,3 +1,7 @@
+## 2.0.1 (2013-11-25)
+
+* Include Resque::Helpers for [breaking change in resque 1.25][resque125] - [jsanders][jsanders] [Pull Request][pull13], [mcfiredrill][mcfiredrill] [Pull Request][pull12]
+
 ## 2.0.0 (2012-12-04)
 
 * Use redis setex to expire metadata from Pascal Brogle - [broglep-koubachi][broglep-koubachi] [Pull Request][pull9]
@@ -31,3 +35,8 @@
 [pull2]: https://github.com/lmarlow/resque-meta/pull/2
 [pull3]: https://github.com/lmarlow/resque-meta/pull/3
 [pull9]: https://github.com/lmarlow/resque-meta/pull/9
+[resque125]: https://github.com/resque/resque/issues/1150
+[jsanders]: https://github.com/jsanders
+[mcfiredrill]: https://github.com/mcfiredrill
+[pull12]: https://github.com/lmarlow/resque-meta/pull/12
+[pull13]: https://github.com/lmarlow/resque-meta/pull/13
