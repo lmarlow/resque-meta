@@ -8,8 +8,8 @@ require 'resque'
 # make sure we can run redis
 #
 
-if !system("which redis-server")
-  puts '', "** can't find `redis-server` in your path"
+if !system("which redis-server") || !system("which redis-cli")
+  puts '', "** missing redis-server and/or redis-cli"
   puts "** try running `sudo rake install`"
   abort ''
 end
@@ -25,10 +25,9 @@ at_exit do
 
   exit_code = Test::Unit::AutoRunner.run
 
-  pid = `ps -A -o pid,command | grep [r]edis-test`.split(" ")[0]
-  puts "Killing test redis server[#{pid}]..."
+  puts "Killing test redis server at localhost:9736..."
+  `redis-cli -p 9736 shutdown`
   `rm -f #{dir}/dump.rdb`
-  Process.kill("KILL", pid.to_i)
   exit exit_code
 end
 
